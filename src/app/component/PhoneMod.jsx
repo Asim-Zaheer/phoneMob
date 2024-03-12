@@ -1,23 +1,23 @@
 "use client"
 import * as THREE from "three"
 import { SpotLight } from "@react-three/drei"
-import {TextureLoader} from "three"
-import React, { useRef,useEffect,Suspense,useState } from 'react'
-import { useGLTF, PerspectiveCamera,OrbitControls} from '@react-three/drei'
-import { Canvas,useFrame } from 'react-three-fiber'
-import {gsap} from 'gsap'
+import { TextureLoader } from "three"
+import React, { useRef, useEffect, Suspense, useState } from 'react'
+import { useGLTF, PerspectiveCamera, OrbitControls } from '@react-three/drei'
+import { Canvas, useFrame } from 'react-three-fiber'
+import { gsap } from 'gsap'
 
 
 
 export function Model(props) {
 
-  const textureLoader = new THREE.TextureLoader().load('assets/Home 1.svg')   
+  const textureLoader = new THREE.TextureLoader().load('assets/Home 1.svg')
 
   const textureMaterial = new THREE.MeshStandardMaterial({
-    map:textureLoader,
+    map: textureLoader,
     // metalness:0.3,
-    roughness:0.5,
-    shininess:100
+    roughness: 0.5,
+    shininess: 100
   })
   const spotLight = (
     <SpotLight
@@ -29,46 +29,33 @@ export function Model(props) {
     />
   );
 
-     const metallicMaterial = new THREE.MeshStandardMaterial({
-   
-    color: '#2C2C2B',          // Color of the material
-    metalness: 1,             // How much the material is a metal (0 to 1)
-    roughness: 0.001,           // How rough the material is (0 to 1)
-    // emissive: 0x0,            // Emissive color (no emissive color in this example)
-    envMapIntensity: 1,     // Intensity of the reflection map
-    side: THREE.FrontSide,   
+  const metallicMaterial = new THREE.MeshStandardMaterial({
+
+    color: '#2C2C2B',          
+    metalness: 1,             
+    roughness: 0.001,            
+    // emissive: 0x0,           
+    envMapIntensity: 1,     
+    side: THREE.FrontSide,
   });
 
   const modelRef = useRef();
-  // useFrame(({ mouse }) => {
-  //   if (modelRef.current) {
-  //     // Calculate the tilt angle based on the cursor position
-  //     const tiltX = (mouse.x * Math.PI) / 4; // Adjust the multiplier to control the tilt intensity
-  //     const tiltY = (mouse.y * Math.PI) / 4; // Adjust the multiplier to control the tilt intensity
-      
-  //     // Update the rotation of the model
-  //     modelRef.current.rotation.set(tiltY, -tiltX, 0);
-  //   }
-  // });
+  
   const tiltMultiplier = 0.5;
 
-  // Function to tilt the model based on the cursor position
   useFrame(({ mouse }) => {
     if (modelRef.current) {
-      // Calculate the tilt angles based on the cursor position
       const tiltY = mouse.x * tiltMultiplier;
-      const tiltX = mouse.y *- tiltMultiplier;
-      // const tiltY = (mouse.y * Math.PI) / 8;
-      // const tiltX = (mouse.x * Math.PI) / 8; // Adjust the multiplier to control the tilt intensity
-
-      // Update the rotation of the model
- gsap.to(modelRef.current.rotation, {
+      const tiltX = mouse.y * - tiltMultiplier;
+     
+      gsap.to(modelRef.current.rotation, {
         x: tiltX,
         y: tiltY,
         duration: 1, // Adjust the duration of the transition
         ease: 'power1.out', // Adjust the easing function
-        delay:0.3
-      });    }
+        delay: 0.3
+      });
+    }
   });
 
   const { nodes, materials } = useGLTF('assets/phone.gltf')
@@ -99,33 +86,33 @@ export function Model(props) {
     </group>
   )
 }
-function PhoneMod(){
-  
+function PhoneMod() {
 
-  return(
+
+  return (
     <>
-    <Canvas>
-    {/* <ambientLight  intensity={1} /> */}
-    <directionalLight color="#ffffff" metalness={1} roughness={0.1} position={[-100, -202, 240]} />
-    <directionalLight color="#fffff" metalness={1} roughness={0.1} position={[125, -150, 190]}/>
-    <directionalLight color="#fffff" metalness={1} roughness={0.1} position={[-195, -60, -190]}/>
-    <directionalLight color="#fffff" metalness={0.5} roughness={0.1} position={[-150, -150,800]}/>
-    <directionalLight color="#fffff" metalness={1} roughness={0.1} position={[100, -50,-200]}/>
-
-    
-
-    {/* <directionalLight intensity={1} color="#ffff"  decay={2} position={[110, 10.884, 40]} /> */}
-
-      <Suspense >
+      <Canvas>
+        {/* <ambientLight  intensity={1} /> */}
+        <directionalLight color="#ffffff" metalness={1} roughness={0.1} position={[-100, -202, 240]} />
+        <directionalLight color="#fffff" metalness={1} roughness={0.1} position={[125, -150, 190]} />
+        <directionalLight color="#fffff" metalness={1} roughness={0.1} position={[-195, -60, -190]} />
+        <directionalLight color="#fffff" metalness={0.5} roughness={0.1} position={[-150, -150, 800]} />
+        <directionalLight color="#fffff" metalness={1} roughness={0.1} position={[100, -50, -200]} />
 
 
 
-    <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} />
-    <Model />
-    
-    </Suspense>
-    </Canvas>
- 
+        {/* <directionalLight intensity={1} color="#ffff"  decay={2} position={[110, 10.884, 40]} /> */}
+
+        <Suspense >
+
+
+
+          <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} />
+          <Model />
+
+        </Suspense>
+      </Canvas>
+
     </>
   )
 }
